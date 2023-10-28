@@ -2,30 +2,24 @@ package clock.gui;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import javax.swing.*;
 
-public class ClockUI implements Runnable {
+public class ClockUI extends JPanel implements Runnable {
     Thread thread = null;
-    JFrame frame;
     JButton button;
     DateTimeFormatter dtf;
     
     
     public ClockUI() {
-        frame = new JFrame("Clock");
-        
+        this.setSize(600,400);
         thread = new Thread(this);
         thread.start();
 
         button = new JButton();        
         button.setBounds(350,200,100,50);
-        
-        frame.add(button);
-        frame.setSize(800, 600);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        this.add(button);
+        this.setLayout(null);
     }
 
     @Override
