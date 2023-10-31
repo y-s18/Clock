@@ -45,7 +45,7 @@ public class ClockUI extends JPanel implements Runnable {
         });
 
         switchAnalogueButton = new JButton(">");
-        switchAnalogueButton.setBounds(100,100,50,50);
+        switchAnalogueButton.setBounds(700,200,50,50);
         switchAnalogueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "analogue");               
@@ -53,7 +53,7 @@ public class ClockUI extends JPanel implements Runnable {
         });
 
         switchDigitalButton = new JButton("<");
-        switchDigitalButton.setBounds(100,100,50,50);
+        switchDigitalButton.setBounds(700,200,50,50);
         switchDigitalButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 layout.show(deck, "digital");                
