@@ -18,7 +18,7 @@ public class ClockUI extends JPanel implements Runnable {
     JPanel analoguePanel;
     JButton switchAnalogueButton;
     JButton switchDigitalButton;
-    
+
     public ClockUI() {
         layout = new CardLayout();
         deck = new JPanel();
@@ -37,7 +37,7 @@ public class ClockUI extends JPanel implements Runnable {
         thread.start();
         
         button = new JButton();        
-        button.setBounds(350,200,100,50);
+        button.setBounds(325,200,150,50);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 is24Format = is24Format ? false : true;
@@ -85,28 +85,20 @@ public class ClockUI extends JPanel implements Runnable {
     }
 
     private void printTime(Date currentTime) {
-        String currentTimeString = formatter.format(currentTime);
-        int currentHourInt = Integer.parseInt(currentTimeString.substring(0,2));
-        String currentHour24FormatStr = "";
-        String am_pmString = "AM";
-        // we get 24 format
+        String currentTimeString;
+        
         if(is24Format){
-            currentHour24FormatStr = 
-                String.valueOf(currentHourInt).concat((String) currentTimeString.subSequence(2, currentTimeString.length()));
+            formatter.applyPattern("HH:mm:ss");
+            currentTimeString = formatter.format(currentTime);
         } else {
-            if(currentHourInt>12){
-                currentHourInt -= 12;
-                am_pmString="PM";
-            } else if (currentHourInt<12){
-                if(currentHourInt == 0) currentHourInt +=12;
-                am_pmString="AM";
-            } else{
-                am_pmString="PM";
+            formatter.applyPattern("hh:mm:ss");
+            if(cal.get(Calendar.AM_PM) == 0){
+                currentTimeString = formatter.format(currentTime) + " AM";
+            } else {
+                currentTimeString = formatter.format(currentTime) + " PM";
             }
-            currentHour24FormatStr = 
-                String.valueOf(currentHourInt).concat((String) currentTimeString.subSequence(2, currentTimeString.length()) + " " + am_pmString);
         }
-        button.setText(currentHour24FormatStr);        
+        button.setText(currentTimeString);        
     }
 
     public static void main(String[] args) {
