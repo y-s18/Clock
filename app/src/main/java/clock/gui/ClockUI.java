@@ -1,5 +1,6 @@
 package clock.gui;
 
+import java.awt.*;
 import java.awt.event.*;
 import java.text.*;
 import java.util.*;
@@ -12,10 +13,26 @@ public class ClockUI extends JPanel implements Runnable {
     Date currentTime;
     SimpleDateFormat formatter;
     boolean is24Format = false; 
-    
+    CardLayout layout;
+    JPanel deck;
+    JPanel analoguePanel;
+    JButton switchAnalogueButton;
+    JButton switchDigitalButton;
     
     public ClockUI() {
+        layout = new CardLayout();
+        deck = new JPanel();
+        deck.setLayout(layout);
+
+        analoguePanel = new JPanel();
+        analoguePanel.setSize(600,400);
+        analoguePanel.setLayout(null);
+
         this.setSize(600,400);
+
+        deck.add(this, "digital");
+        deck.add(analoguePanel, "analogue");
+        
         thread = new Thread(this);
         thread.start();
         
@@ -27,7 +44,25 @@ public class ClockUI extends JPanel implements Runnable {
             }
         });
 
+        switchAnalogueButton = new JButton(">");
+        switchAnalogueButton.setBounds(100,100,50,50);
+        switchAnalogueButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                layout.show(deck, "analogue");               
+            }
+        });
+
+        switchDigitalButton = new JButton("<");
+        switchDigitalButton.setBounds(100,100,50,50);
+        switchDigitalButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                layout.show(deck, "digital");                
+            }
+        });
+
         this.add(button);
+        this.add(switchAnalogueButton);
+        analoguePanel.add(switchDigitalButton);
         this.setLayout(null);
     }
 

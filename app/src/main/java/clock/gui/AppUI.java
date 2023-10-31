@@ -20,7 +20,7 @@ public class AppUI {
         stopwatchP = new JPanel();
         clockUI = new ClockUI();
         
-        tp.add("Clock", clockUI);
+        tp.add("Clock", clockUI.deck);
         tp.add("Alarm", alarmP);
         tp.add("Timer", timerP);
         tp.add("Stopwatch", stopwatchP);
