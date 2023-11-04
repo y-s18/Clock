@@ -3,8 +3,8 @@ package clock.gui;
 import javax.swing.*;
 
 public class AppUI {
-    JFrame frame;
-    JTabbedPane tp;
+    JFrame mainFrame;
+    JTabbedPane tabbedPane;
     JPanel clockP;
     JPanel alarmP;
     JPanel timerP;
@@ -12,25 +12,38 @@ public class AppUI {
     ClockUI clockUI;
 
     public AppUI() {
-        frame = new JFrame("Main");
-        tp = new JTabbedPane();
-        clockP = new JPanel();
+        setUpAppComponents();
+    }
+
+    private void setUpAppComponents() {
+        mainFrame = new JFrame("Main");
+        tabbedPane = new JTabbedPane();
+        mainFrame.add(tabbedPane);
+
+        createTabPaneComponents();
+        addTabPaneComponents();
+        configureMainFrame();
+    }
+
+    private void createTabPaneComponents() {
+        clockUI = new ClockUI();
         alarmP = new JPanel();
         timerP = new JPanel();
         stopwatchP = new JPanel();
-        clockUI = new ClockUI();
-        
-        tp.add("Clock", clockUI.deck);
-        tp.add("Alarm", alarmP);
-        tp.add("Timer", timerP);
-        tp.add("Stopwatch", stopwatchP);
+    }
 
-        frame.add(tp);
+    private void addTabPaneComponents() {
+        tabbedPane.add("Clock", clockUI.deck);
+        tabbedPane.add("Alarm", alarmP);
+        tabbedPane.add("Timer", timerP);
+        tabbedPane.add("Stopwatch", stopwatchP);
+    }
 
-        frame.setSize(800, 600);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+    private void configureMainFrame() {
+        mainFrame.setSize(800, 600);
+        mainFrame.setVisible(true);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setResizable(false);
     }
 
     public static void main(String[] args) {

@@ -8,37 +8,49 @@ import javax.swing.*;
 
 public class ClockUI extends JPanel implements Runnable {
     Thread thread = null;
-    JButton button;
+    JButton timeFormatSwitcher;
     Calendar cal;
     Date currentTime;
-    SimpleDateFormat formatter;
+    SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
     boolean is24Format = false; 
-    CardLayout layout;
+    CardLayout cardLayout;
     JPanel deck;
     JPanel analoguePanel;
     JButton switchAnalogueButton;
     JButton switchDigitalButton;
 
     public ClockUI() {
-        layout = new CardLayout();
-        deck = new JPanel();
-        deck.setLayout(layout);
+        setUpAnaloguePanel();
+        setUpDigitalPanel();
+        setUpDeckPanel();
 
-        analoguePanel = new JPanel();
-        analoguePanel.setSize(600,400);
-        analoguePanel.setLayout(null);
-
-        this.setSize(600,400);
-
-        deck.add(this, "digital");
-        deck.add(analoguePanel, "analogue");
-        
         thread = new Thread(this);
         thread.start();
-        
-        button = new JButton();        
-        button.setBounds(325,200,150,50);
-        button.addActionListener(new ActionListener() {
+    }
+
+    private void setUpDeckPanel() {
+        deck = new JPanel();  // deck contains panels
+        cardLayout = new CardLayout();
+        deck.setLayout(cardLayout);
+        addDeckComponents();
+    }
+
+    private void addDeckComponents() {
+        deck.add(this, "digital");
+        deck.add(analoguePanel, "analogue");
+    }
+
+    private void setUpDigitalPanel() {
+        this.setSize(600,400);
+        this.setLayout(null);
+        setUpDigitalComponents();
+        addDigitalComponents();
+    }
+
+    private void setUpDigitalComponents() {
+        timeFormatSwitcher = new JButton();        
+        timeFormatSwitcher.setBounds(325,200,150,50);
+        timeFormatSwitcher.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 is24Format = is24Format ? false : true;
             }
@@ -48,35 +60,43 @@ public class ClockUI extends JPanel implements Runnable {
         switchAnalogueButton.setBounds(700,200,50,50);
         switchAnalogueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                layout.show(deck, "analogue");               
+                cardLayout.show(deck, "analogue");               
             }
         });
+    }
 
+    private void addDigitalComponents() {
+        this.add(timeFormatSwitcher);
+        this.add(switchAnalogueButton);
+    }
+    
+    private void setUpAnaloguePanel() {
+        analoguePanel = new JPanel();
+        analoguePanel.setSize(600,400);
+        analoguePanel.setLayout(null);
+        setUpAnalogueComponents();
+        addAnalogueComponents();
+    }
+
+    private void setUpAnalogueComponents() {
         switchDigitalButton = new JButton("<");
         switchDigitalButton.setBounds(700,200,50,50);
         switchDigitalButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                layout.show(deck, "digital");                
+                cardLayout.show(deck, "digital");                
             }
         });
+    }
 
-        this.add(button);
-        this.add(switchAnalogueButton);
+    private void addAnalogueComponents() {
         analoguePanel.add(switchDigitalButton);
-        this.setLayout(null);
     }
 
     @Override
     public void run() {
         try {
             while (true) {
-
-                formatter = new SimpleDateFormat("hh:mm:ss");
-                cal = Calendar.getInstance();
-                currentTime = cal.getTime();
-
-                printTime(currentTime);
-
+                displayTime(getCurrentTime());
                 Thread.sleep(1000);
             }
         } catch (Exception e) {
@@ -84,25 +104,18 @@ public class ClockUI extends JPanel implements Runnable {
         }
     }
 
-    private void printTime(Date currentTime) {
-        String currentTimeString;
-        
-        if(is24Format){
-            formatter.applyPattern("HH:mm:ss");
-            currentTimeString = formatter.format(currentTime);
-        } else {
-            formatter.applyPattern("hh:mm:ss");
-            if(cal.get(Calendar.AM_PM) == 0){
-                currentTimeString = formatter.format(currentTime) + " AM";
-            } else {
-                currentTimeString = formatter.format(currentTime) + " PM";
-            }
-        }
-        button.setText(currentTimeString);        
+    private Date getCurrentTime() {
+        cal = Calendar.getInstance();
+        return cal.getTime();
     }
 
-    public static void main(String[] args) {
-        new ClockUI();
+    private void displayTime(Date currentTime) {
+        if(is24Format){
+            formatter.applyPattern("HH:mm:ss");
+        } else {
+            formatter.applyPattern("hh:mm:ss a");
+        }
+        timeFormatSwitcher.setText(formatter.format(currentTime));        
     }
 
 }
