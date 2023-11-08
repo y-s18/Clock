@@ -33,7 +33,7 @@ public class AppUI {
     }
 
     private void addTabPaneComponents() {
-        tabbedPane.add("Clock", clockUI.deck);
+        tabbedPane.add("Clock", clockUI);
         tabbedPane.add("Alarm", alarmP);
         tabbedPane.add("Timer", timerP);
         tabbedPane.add("Stopwatch", stopwatchP);

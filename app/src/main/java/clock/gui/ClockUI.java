@@ -14,7 +14,7 @@ public class ClockUI extends JPanel implements Runnable {
     SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
     boolean is24Format = false; 
     CardLayout cardLayout;
-    JPanel deck;
+    JPanel digitalPanel;
     JPanel analoguePanel;
     JButton switchAnalogueButton;
     JButton switchDigitalButton;
@@ -29,20 +29,20 @@ public class ClockUI extends JPanel implements Runnable {
     }
 
     private void setUpDeckPanel() {
-        deck = new JPanel();  // deck contains panels
         cardLayout = new CardLayout();
-        deck.setLayout(cardLayout);
+        this.setLayout(cardLayout);
         addDeckComponents();
     }
 
     private void addDeckComponents() {
-        deck.add(this, "digital");
-        deck.add(analoguePanel, "analogue");
+        this.add(digitalPanel, "digital");
+        this.add(analoguePanel, "analogue");
     }
 
     private void setUpDigitalPanel() {
-        this.setSize(600,400);
-        this.setLayout(null);
+        digitalPanel = new JPanel();
+        digitalPanel.setSize(600,400);
+        digitalPanel.setLayout(null);
         setUpDigitalComponents();
         addDigitalComponents();
     }
@@ -60,14 +60,14 @@ public class ClockUI extends JPanel implements Runnable {
         switchAnalogueButton.setBounds(700,200,50,50);
         switchAnalogueButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                cardLayout.show(deck, "analogue");               
+                cardLayout.show(ClockUI.this, "analogue");               
             }
         });
     }
 
     private void addDigitalComponents() {
-        this.add(timeFormatSwitcher);
-        this.add(switchAnalogueButton);
+        digitalPanel.add(timeFormatSwitcher);
+        digitalPanel.add(switchAnalogueButton);
     }
     
     private void setUpAnaloguePanel() {
@@ -83,7 +83,7 @@ public class ClockUI extends JPanel implements Runnable {
         switchDigitalButton.setBounds(700,200,50,50);
         switchDigitalButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                cardLayout.show(deck, "digital");                
+                cardLayout.show(ClockUI.this, "digital");                
             }
         });
     }
