@@ -71,7 +71,7 @@ public class ClockUI extends JPanel implements Runnable {
     }
     
     private void setUpAnaloguePanel() {
-        analoguePanel = new JPanel();
+        analoguePanel = new AnalogueUI();
         analoguePanel.setSize(600,400);
         analoguePanel.setLayout(null);
         setUpAnalogueComponents();
@@ -97,7 +97,7 @@ public class ClockUI extends JPanel implements Runnable {
         try {
             while (true) {
                 displayTime(getCurrentTime());
-                Thread.sleep(1000);
+                // Thread.sleep(1000);
             }
         } catch (Exception e) {
             // TODO: handle exception
