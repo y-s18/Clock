@@ -27,7 +27,7 @@ public class AppUI {
 
     private void createTabPaneComponents() {
         clockUI = new ClockUI();
-        alarmP = new JPanel();
+        alarmP = new AlarmUI();
         timerP = new JPanel();
         stopwatchP = new JPanel();
     }
