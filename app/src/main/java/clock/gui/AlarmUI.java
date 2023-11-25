@@ -1,5 +1,9 @@
 package clock.gui;
 
+import java.awt.*;
+
+import java.awt.event.*;
+
 import javax.swing.*;
 
 public class AlarmUI extends JPanel {
@@ -11,7 +15,14 @@ public class AlarmUI extends JPanel {
     private JList<String> ampmMarkerList;
     private JScrollPane hoursScrollPane;
     private JScrollPane minutesScrollPane;
-    private JScrollPane ampmMarkerScrollPane;    
+    private JScrollPane ampmMarkerScrollPane;
+    private JToggleButton monTButton;
+    private JToggleButton tueTButton;
+    private JToggleButton wedTButton;
+    private JToggleButton thursTButton;
+    private JToggleButton friTButton;
+    private JToggleButton satTButton;
+    private JToggleButton sunTButton;
 
     public AlarmUI(){
         this.setLayout(null);
@@ -23,22 +34,57 @@ public class AlarmUI extends JPanel {
         setupHoursPane();
         setupMinutesPane();
         setupAmPmMarkerPane();
+        createTButtons();
+        configureTButtons();
 
         addAlarmComponenets();       
         
     }
     
+    private void createTButtons() {
+        monTButton = new JToggleButton("Mo");
+        tueTButton = new JToggleButton("Tu");
+        wedTButton = new JToggleButton("We");
+        thursTButton = new JToggleButton("Th");
+        friTButton = new JToggleButton("Fr");
+        satTButton = new JToggleButton("Sa");
+        sunTButton = new JToggleButton("Su");
+    }
+
+    private void configureTButtons() {
+        monTButton.setBounds(0,0,45,25);
+        monTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+
+        tueTButton.setBounds(45,0,45,25);
+        tueTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+
+        wedTButton.setBounds(90,0,45,25);
+        wedTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+
+        thursTButton.setBounds(135,0,45,25);
+        thursTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+
+        friTButton.setBounds(180,0,45,25);
+        friTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+
+        satTButton.setBounds(225,0,45,25);
+        satTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+        
+        sunTButton.setBounds(270,0,45,25);
+        sunTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+    }
+
     private void setupHoursList() {
         hoursListModel = new DefaultListModel<>();
         for(int i=0; i<13;i++)
-        hoursListModel.addElement(" " + i);        
+            hoursListModel.addElement(" " + i);        
         hoursList = new JList<>(hoursListModel);
     }
     
     private void setupMinutesList() {
         minutesListModel = new DefaultListModel<>();
         for(int i=0; i<60;i++)
-        minutesListModel.addElement(" " + i);            
+            minutesListModel.addElement(" " + i);            
         minutesList = new JList<>(minutesListModel);
     }
 
@@ -51,22 +97,29 @@ public class AlarmUI extends JPanel {
     
     private void setupHoursPane() {
         hoursScrollPane = new JScrollPane(hoursList);
-        hoursScrollPane.setBounds(0,0,40,25);
+        hoursScrollPane.setBounds(300,250,40,25);
     }
     
     private void setupMinutesPane() {
         minutesScrollPane = new JScrollPane(minutesList);
-        minutesScrollPane.setBounds(40,0,40,25);
+        minutesScrollPane.setBounds(340,250,40,25);
     }
     
     private void setupAmPmMarkerPane() {
         ampmMarkerScrollPane = new JScrollPane(ampmMarkerList);
-        ampmMarkerScrollPane.setBounds(80,0,40,25); 
+        ampmMarkerScrollPane.setBounds(380,250,40,25);
     }
 
     private void addAlarmComponenets() {
         this.add(hoursScrollPane);
         this.add(minutesScrollPane);
         this.add(ampmMarkerScrollPane);
+        this.add(monTButton);
+        this.add(tueTButton);
+        this.add(wedTButton);
+        this.add(thursTButton);
+        this.add(friTButton);
+        this.add(satTButton);
+        this.add(sunTButton);
     }
 }
