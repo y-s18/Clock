@@ -1,9 +1,7 @@
 package clock.gui;
-
 import java.awt.*;
-
 import java.awt.event.*;
-
+import java.net.URL;
 import javax.swing.*;
 
 public class AlarmUI extends JPanel {
@@ -23,6 +21,9 @@ public class AlarmUI extends JPanel {
     private JToggleButton friTButton;
     private JToggleButton satTButton;
     private JToggleButton sunTButton;
+    private JRadioButton snoozeRButton;
+    private JButton setButton;
+    private JButton resetButton;
 
     public AlarmUI(){
         this.setLayout(null);
@@ -34,14 +35,25 @@ public class AlarmUI extends JPanel {
         setupHoursPane();
         setupMinutesPane();
         setupAmPmMarkerPane();
-        createTButtons();
-        configureTButtons();
+        createDayTButtons();
+        configureDayTButtons();
+        setupAlarmButtons();
 
         addAlarmComponenets();       
         
     }
     
-    private void createTButtons() {
+    private void setupAlarmButtons() {
+        snoozeRButton = new JRadioButton("Snooze");
+        setButton = new JButton("Set");
+        resetButton = new JButton("Reset");
+
+        snoozeRButton.setBounds(300,100,80,50);
+        setButton.setBounds(100, 100, 80, 50);
+        resetButton.setBounds(200, 100, 80, 50);
+    }
+
+    private void createDayTButtons() {
         monTButton = new JToggleButton("Mo");
         tueTButton = new JToggleButton("Tu");
         wedTButton = new JToggleButton("We");
@@ -51,7 +63,7 @@ public class AlarmUI extends JPanel {
         sunTButton = new JToggleButton("Su");
     }
 
-    private void configureTButtons() {
+    private void configureDayTButtons() {
         monTButton.setBounds(0,0,45,25);
         monTButton.setFont(new Font("Arial", Font.PLAIN, 8));
 
@@ -69,7 +81,7 @@ public class AlarmUI extends JPanel {
 
         satTButton.setBounds(225,0,45,25);
         satTButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        
+
         sunTButton.setBounds(270,0,45,25);
         sunTButton.setFont(new Font("Arial", Font.PLAIN, 8));
     }
@@ -121,5 +133,8 @@ public class AlarmUI extends JPanel {
         this.add(friTButton);
         this.add(satTButton);
         this.add(sunTButton);
+        this.add(snoozeRButton);
+        this.add(setButton);
+        this.add(resetButton);
     }
 }
