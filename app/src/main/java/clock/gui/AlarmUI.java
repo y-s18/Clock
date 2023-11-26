@@ -1,7 +1,5 @@
 package clock.gui;
 import java.awt.*;
-import java.awt.event.*;
-import java.net.URL;
 import javax.swing.*;
 
 public class AlarmUI extends JPanel {
