@@ -11,11 +11,12 @@ public class AppUI {
     JPanel stopwatchP;
     ClockUI clockUI;
 
-    public AppUI() {
+    public AppUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         setUpAppComponents();
     }
 
-    private void setUpAppComponents() {
+    private void setUpAppComponents() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         mainFrame = new JFrame("Main");
         tabbedPane = new JTabbedPane();
         mainFrame.add(tabbedPane);
@@ -46,7 +47,7 @@ public class AppUI {
         mainFrame.setResizable(false);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         new AppUI();
     }
 
