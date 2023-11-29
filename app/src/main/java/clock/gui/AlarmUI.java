@@ -1,5 +1,6 @@
 package clock.gui;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 public class AlarmUI extends JPanel {
@@ -23,6 +24,9 @@ public class AlarmUI extends JPanel {
     private JButton setButton;
     private JButton resetButton;
 
+    private JPanel alarmsListPanel;
+    private JScrollPane alarmsListScrollPane;
+    
     public AlarmUI(){
         this.setLayout(null);
 
@@ -36,11 +40,22 @@ public class AlarmUI extends JPanel {
         createDayTButtons();
         configureDayTButtons();
         setupAlarmButtons();
-
+        setupAlarmsList();
+        
         addAlarmComponenets();       
         
     }
     
+    private void setupAlarmsList() {
+        alarmsListPanel = new JPanel();
+        this.alarmsListPanel.setLayout(new BoxLayout(alarmsListPanel, BoxLayout.PAGE_AXIS));
+        this.alarmsListPanel.setBounds(1,1,98,98);
+        alarmsListScrollPane = new JScrollPane(alarmsListPanel, 
+                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.alarmsListScrollPane.setBounds(500, 100, 100, 100);
+    }
+
     private void setupAlarmButtons() {
         snoozeRButton = new JRadioButton("Snooze");
         setButton = new JButton("Set");
@@ -49,6 +64,15 @@ public class AlarmUI extends JPanel {
         snoozeRButton.setBounds(300,100,80,50);
         setButton.setBounds(100, 100, 80, 50);
         resetButton.setBounds(200, 100, 80, 50);
+
+        setButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JButton newAlarm = new JButton("new Alarm");
+                newAlarm.setSize(75, 26);
+                AlarmUI.this.alarmsListPanel.add(newAlarm);
+            }
+        });
     }
 
     private void createDayTButtons() {
@@ -134,5 +158,6 @@ public class AlarmUI extends JPanel {
         this.add(snoozeRButton);
         this.add(setButton);
         this.add(resetButton);
+        this.add(alarmsListScrollPane);
     }
 }
