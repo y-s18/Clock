@@ -49,15 +49,38 @@ public class AlarmUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addNewAlarmButton();
+                clearNewAlarmDialogSelections();
                 AlarmUI.this.naDialog.dispose();
             }
         });
+        
+        ((NewAlarmDialog) this.naDialog).getResetButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearNewAlarmDialogSelections();
+            }
+        });
     }
-    
+
     protected void addNewAlarmButton() {
         JButton newAlarm = new JButton("new Alarm");
         newAlarm.setSize(75, 26);
         AlarmUI.this.alarmsListPanel.add(newAlarm);
+    }
+    
+    protected void clearNewAlarmDialogSelections() {
+        ((NewAlarmDialog) this.naDialog).getMonTButton().setSelected(false);
+        ((NewAlarmDialog) this.naDialog).getTueTButton().setSelected(false);
+        ((NewAlarmDialog) this.naDialog).getWedTButton().setSelected(false);
+        ((NewAlarmDialog) this.naDialog).getThursTButton().setSelected(false);
+        ((NewAlarmDialog) this.naDialog).getFriTButton().setSelected(false);
+        ((NewAlarmDialog) this.naDialog).getSatTButton().setSelected(false);
+        ((NewAlarmDialog) this.naDialog).getSunTButton().setSelected(false);
+        ((NewAlarmDialog) this.naDialog).getSnoozeRButton().setSelected(false);
+
+        ((NewAlarmDialog) this.naDialog).getHoursList().clearSelection();
+        ((NewAlarmDialog) this.naDialog).getMinutesList().clearSelection();
+        ((NewAlarmDialog) this.naDialog).getAmpmMarkerList().clearSelection();
     }
 
     private void addAlarmUIComponents() {

@@ -23,7 +23,7 @@ public class NewAlarmDialog extends JDialog{
     private JRadioButton snoozeRButton;
     private JButton setButton;
     private JButton resetButton;
-    
+
     public NewAlarmDialog(){
         configureDialog();
         
@@ -33,7 +33,7 @@ public class NewAlarmDialog extends JDialog{
         setupHoursPane();
         setupMinutesPane();
         setupAmPmMarkerPane();
-
+        
         createDayTButtons();
         configureDayTButtons();
         setupAlarmButtons();
@@ -117,7 +117,7 @@ public class NewAlarmDialog extends JDialog{
         sunTButton.setBounds(270,0,45,25);
         sunTButton.setFont(new Font("Arial", Font.PLAIN, 8));
     }
-
+    
     private void setupAlarmButtons() {
         snoozeRButton = new JRadioButton("Snooze");
         setButton = new JButton("Set");
@@ -144,8 +144,56 @@ public class NewAlarmDialog extends JDialog{
         this.add(setButton);
         this.add(resetButton);
     }
-
+    
     public JButton getSetButton() {
         return setButton;
+    }
+    
+    public JList<String> getHoursList() {
+        return hoursList;
+    }
+    
+    public JList<String> getMinutesList() {
+        return minutesList;
+    }
+    
+    public JList<String> getAmpmMarkerList() {
+        return ampmMarkerList;
+    }
+    
+    public JToggleButton getMonTButton() {
+        return monTButton;
+    }
+    
+    public JToggleButton getTueTButton() {
+        return tueTButton;
+    }
+    
+    public JToggleButton getWedTButton() {
+        return wedTButton;
+    }
+    
+    public JToggleButton getThursTButton() {
+        return thursTButton;
+    }
+    
+    public JToggleButton getFriTButton() {
+        return friTButton;
+    }
+    
+    public JToggleButton getSatTButton() {
+        return satTButton;
+    }
+    
+    public JToggleButton getSunTButton() {
+        return sunTButton;
+    }
+    
+    public JRadioButton getSnoozeRButton() {
+        return snoozeRButton;
+    }
+
+    public JButton getResetButton() {
+        return resetButton;
     }
 }
