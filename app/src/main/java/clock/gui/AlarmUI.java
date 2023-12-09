@@ -30,6 +30,7 @@ public class AlarmUI extends JPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ((NewAlarmDialog) AlarmUI.this.naDialog).clearNewAlarmDialogSelections();
                 AlarmUI.this.naDialog.setVisible(true);
             }
         });
