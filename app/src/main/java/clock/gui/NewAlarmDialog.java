@@ -1,7 +1,9 @@
 package clock.gui;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
+import java.util.LinkedList;
 
 public class NewAlarmDialog extends JDialog{
     private DefaultListModel<String> hoursListModel;
@@ -13,16 +15,15 @@ public class NewAlarmDialog extends JDialog{
     private JScrollPane hoursScrollPane;
     private JScrollPane minutesScrollPane;
     private JScrollPane ampmMarkerScrollPane;
-    private JToggleButton monTButton;
-    private JToggleButton tueTButton;
-    private JToggleButton wedTButton;
-    private JToggleButton thursTButton;
-    private JToggleButton friTButton;
-    private JToggleButton satTButton;
-    private JToggleButton sunTButton;
     private JRadioButton snoozeRButton;
     private JButton setButton;
     private JButton resetButton;
+    private LinkedList<NewAlarm> setAlarms = new LinkedList<NewAlarm>();
+    private JToggleButton[] weekDays = new JToggleButton[7];
+
+    public LinkedList<NewAlarm> getSetAlarms() {
+        return setAlarms;
+    }
 
     public NewAlarmDialog(){
         configureDialog();
@@ -86,36 +87,22 @@ public class NewAlarmDialog extends JDialog{
     }
     
     private void createDayTButtons() {
-        monTButton = new JToggleButton("Mo");
-        tueTButton = new JToggleButton("Tu");
-        wedTButton = new JToggleButton("We");
-        thursTButton = new JToggleButton("Th");
-        friTButton = new JToggleButton("Fr");
-        satTButton = new JToggleButton("Sa");
-        sunTButton = new JToggleButton("Su");
+        this.weekDays[0]= new JToggleButton("Mo");
+        this.weekDays[1]= new JToggleButton("Tu");
+        this.weekDays[2]= new JToggleButton("We");
+        this.weekDays[3]= new JToggleButton("Th");
+        this.weekDays[4]= new JToggleButton("Fr");
+        this.weekDays[5]= new JToggleButton("Sa");
+        this.weekDays[6]= new JToggleButton("Su");
     }
     
     private void configureDayTButtons() {
-        monTButton.setBounds(0,0,45,25);
-        monTButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        
-        tueTButton.setBounds(45,0,45,25);
-        tueTButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        
-        wedTButton.setBounds(90,0,45,25);
-        wedTButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        
-        thursTButton.setBounds(135,0,45,25);
-        thursTButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        
-        friTButton.setBounds(180,0,45,25);
-        friTButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        
-        satTButton.setBounds(225,0,45,25);
-        satTButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        
-        sunTButton.setBounds(270,0,45,25);
-        sunTButton.setFont(new Font("Arial", Font.PLAIN, 8));
+        int x = 0;
+        for (JToggleButton tb : this.weekDays) {
+            tb.setBounds(x,0,45,25);
+            tb.setFont(new Font("Arial", Font.PLAIN, 8));
+            x += 45;    
+        }
     }
     
     private void setupAlarmButtons() {
@@ -126,74 +113,111 @@ public class NewAlarmDialog extends JDialog{
         snoozeRButton.setBounds(300,100,80,50);
         setButton.setBounds(100, 100, 80, 50);
         resetButton.setBounds(200, 100, 80, 50);
+
+        String message = "Set a time";
+        this.setButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isTimeSelected()){
+                    instantiateNewAlarm(createNewAlarmButton(), getSelectedSettings());
+                    NewAlarmDialog.this.clearNewAlarmDialogSelections();
+                    NewAlarmDialog.this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(new Frame(), message, "Select time", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+        });
+        
+        this.resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NewAlarmDialog.this.clearNewAlarmDialogSelections();
+            }
+        });
         
     }
     
+    boolean isTimeSelected() {
+        return !this.hoursList.isSelectionEmpty()
+            && !this.minutesList.isSelectionEmpty()
+            && !this.ampmMarkerList.isSelectionEmpty();
+    }
+
+    protected int[] getSelectedSettings() {
+        int[] selectedSettings = new int[11]; // FIRST 0-6 ARE DAYS, 7 IS SNOOZE, 8-9 Hours Minutes, 10 am pm
+
+        for (int i = 0; i < selectedSettings.length-4; i++) 
+            selectedSettings[i] = this.weekDays[i].isSelected() ? 1 : 0;
+
+        selectedSettings[7] = this.snoozeRButton.isSelected() ? 1 : 0;
+        
+        // WE NEED SUBSTRING BECAUSE IT STARTS WITH A SPACE
+        // selectedSettings[8] = Integer.parseInt(this.hoursList.getSelectedValue().substring(1));
+        // selectedSettings[9] = Integer.parseInt(this.minutesList.getSelectedValue().substring(1));
+        // selectedSettings[10] = (this.ampmMarkerList.getSelectedValue() == "am") ? 0 : 1;
+        selectedSettings[8] = this.hoursList.getSelectedIndex();
+        selectedSettings[9] = this.minutesList.getSelectedIndex();
+        selectedSettings[10] = this.ampmMarkerList.getSelectedIndex();
+        
+        return selectedSettings;
+    }
+
+    JButton createNewAlarmButton() {
+        JButton newAlarmButton = new JButton("new Alarm");
+        newAlarmButton.setSize(75, 26);
+
+        return newAlarmButton;
+    }
+
+    void instantiateNewAlarm(JButton newAlarmButton, int[] alarmSettings) {
+        NewAlarm newAlarm = new NewAlarm(newAlarmButton, alarmSettings);
+        this.setAlarms.add(newAlarm);
+
+        newAlarmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NewAlarmDialog.this.displaySetAlarmSettings(alarmSettings);
+                NewAlarmDialog.this.setVisible(true);
+            }
+        });
+    }
+
+    void displaySetAlarmSettings(int[] alarmSettings) {
+        for (int i = 0; i < alarmSettings.length-4; i++) {
+            this.weekDays[i].setSelected((alarmSettings[i] == 1) ? true : false);
+        }
+        this.snoozeRButton.setSelected((alarmSettings[7] == 1) ? true : false);
+
+        this.hoursList.setSelectedIndex(alarmSettings[8]);
+        this.hoursList.ensureIndexIsVisible(hoursList.getSelectedIndex());
+        this.minutesList.setSelectedIndex(alarmSettings[9]);
+        this.minutesList.ensureIndexIsVisible(minutesList.getSelectedIndex());
+        this.ampmMarkerList.setSelectedIndex(alarmSettings[10]);
+        this.ampmMarkerList.ensureIndexIsVisible(ampmMarkerList.getSelectedIndex());
+    }
+
     private void addAlarmComponents() {
         this.add(hoursScrollPane);
         this.add(minutesScrollPane);
         this.add(ampmMarkerScrollPane);
-        this.add(monTButton);
-        this.add(tueTButton);
-        this.add(wedTButton);
-        this.add(thursTButton);
-        this.add(friTButton);
-        this.add(satTButton);
-        this.add(sunTButton);
+
+        for (JToggleButton tb : this.weekDays)
+            this.add(tb);
+        
         this.add(snoozeRButton);
         this.add(setButton);
         this.add(resetButton);
     }
-    
-    public JButton getSetButton() {
-        return setButton;
-    }
-    
-    public JList<String> getHoursList() {
-        return hoursList;
-    }
-    
-    public JList<String> getMinutesList() {
-        return minutesList;
-    }
-    
-    public JList<String> getAmpmMarkerList() {
-        return ampmMarkerList;
-    }
-    
-    public JToggleButton getMonTButton() {
-        return monTButton;
-    }
-    
-    public JToggleButton getTueTButton() {
-        return tueTButton;
-    }
-    
-    public JToggleButton getWedTButton() {
-        return wedTButton;
-    }
-    
-    public JToggleButton getThursTButton() {
-        return thursTButton;
-    }
-    
-    public JToggleButton getFriTButton() {
-        return friTButton;
-    }
-    
-    public JToggleButton getSatTButton() {
-        return satTButton;
-    }
-    
-    public JToggleButton getSunTButton() {
-        return sunTButton;
-    }
-    
-    public JRadioButton getSnoozeRButton() {
-        return snoozeRButton;
-    }
 
-    public JButton getResetButton() {
-        return resetButton;
-    }
+    void clearNewAlarmDialogSelections() {
+        for (JToggleButton tb: this.weekDays)
+            tb.setSelected(false);
+
+        this.snoozeRButton.setSelected(false);
+
+        this.hoursList.clearSelection();
+        this.minutesList.clearSelection();
+        this.ampmMarkerList.clearSelection();
+    }    
 }
