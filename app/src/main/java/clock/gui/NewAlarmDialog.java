@@ -21,10 +21,6 @@ public class NewAlarmDialog extends JDialog{
     private LinkedList<NewAlarm> setAlarms = new LinkedList<NewAlarm>();
     private JToggleButton[] weekDays = new JToggleButton[7];
 
-    public LinkedList<NewAlarm> getSetAlarms() {
-        return setAlarms;
-    }
-
     public NewAlarmDialog(){
         configureDialog();
         
@@ -52,15 +48,15 @@ public class NewAlarmDialog extends JDialog{
     
     private void setupHoursList() {
         hoursListModel = new DefaultListModel<>();
-        for(int i=0; i<13;i++)
-        hoursListModel.addElement(" " + i);        
+        for(int i=1; i<13;i++)
+            hoursListModel.addElement(i<10 ? "0"+i : ""+i);        
         hoursList = new JList<>(hoursListModel);
     }
     
     private void setupMinutesList() {
         minutesListModel = new DefaultListModel<>();
         for(int i=0; i<60;i++)
-        minutesListModel.addElement(" " + i);            
+            minutesListModel.addElement(i<10 ? "0"+i : ""+i);            
         minutesList = new JList<>(minutesListModel);
     }
     
@@ -126,7 +122,6 @@ public class NewAlarmDialog extends JDialog{
                     JOptionPane.showMessageDialog(new Frame(), message, "Select time", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            
         });
         
         this.resetButton.addActionListener(new ActionListener() {
@@ -135,7 +130,6 @@ public class NewAlarmDialog extends JDialog{
                 NewAlarmDialog.this.clearNewAlarmDialogSelections();
             }
         });
-        
     }
     
     boolean isTimeSelected() {
@@ -143,35 +137,32 @@ public class NewAlarmDialog extends JDialog{
             && !this.minutesList.isSelectionEmpty()
             && !this.ampmMarkerList.isSelectionEmpty();
     }
-
-    protected int[] getSelectedSettings() {
-        int[] selectedSettings = new int[11]; // FIRST 0-6 ARE DAYS, 7 IS SNOOZE, 8-9 Hours Minutes, 10 am pm
-
-        for (int i = 0; i < selectedSettings.length-4; i++) 
-            selectedSettings[i] = this.weekDays[i].isSelected() ? 1 : 0;
-
-        selectedSettings[7] = this.snoozeRButton.isSelected() ? 1 : 0;
-        
-        // WE NEED SUBSTRING BECAUSE IT STARTS WITH A SPACE
-        // selectedSettings[8] = Integer.parseInt(this.hoursList.getSelectedValue().substring(1));
-        // selectedSettings[9] = Integer.parseInt(this.minutesList.getSelectedValue().substring(1));
-        // selectedSettings[10] = (this.ampmMarkerList.getSelectedValue() == "am") ? 0 : 1;
-        selectedSettings[8] = this.hoursList.getSelectedIndex();
-        selectedSettings[9] = this.minutesList.getSelectedIndex();
-        selectedSettings[10] = this.ampmMarkerList.getSelectedIndex();
-        
-        return selectedSettings;
-    }
-
+    
     JButton createNewAlarmButton() {
         JButton newAlarmButton = new JButton("new Alarm");
         newAlarmButton.setSize(75, 26);
-
         return newAlarmButton;
+    }
+
+    int[] getSelectedSettings() {
+        // 0-6 WEEK DAYS, 7 SNOOZE, 8-9 Hours Minutes, 10 am pm, 11,12 Selected Time
+        int[] selectedSettings = new int[13]; 
+
+        for (int i = 0; i < selectedSettings.length-6; i++) 
+            selectedSettings[i] = this.weekDays[i].isSelected() ? 1 : 0;
+        selectedSettings[7] = this.snoozeRButton.isSelected() ? 1 : 0;
+        selectedSettings[8] = this.hoursList.getSelectedIndex();
+        selectedSettings[9] = this.minutesList.getSelectedIndex();
+        selectedSettings[10] = this.ampmMarkerList.getSelectedIndex();
+        selectedSettings[11] = Integer.parseInt(this.hoursList.getSelectedValue());
+        selectedSettings[12] = Integer.parseInt(this.minutesList.getSelectedValue());
+        return selectedSettings;
     }
 
     void instantiateNewAlarm(JButton newAlarmButton, int[] alarmSettings) {
         NewAlarm newAlarm = new NewAlarm(newAlarmButton, alarmSettings);
+        newAlarm.setAlarmTime(formatAlarmTime(alarmSettings[11], alarmSettings[12], alarmSettings[10]));
+        newAlarm.getButton().setText(newAlarm.getAlarmTime());
         this.setAlarms.add(newAlarm);
 
         newAlarmButton.addActionListener(new ActionListener() {
@@ -182,9 +173,16 @@ public class NewAlarmDialog extends JDialog{
             }
         });
     }
+    
+    private String formatAlarmTime(int hour, int minute, int ampmMarker) {
+        String formattedTime = hour<10 ? "0"+hour : ""+hour;
+        formattedTime += minute<10 ? ":0"+minute : ":"+minute;
+        formattedTime += ampmMarker==1 ? " PM" : " AM";
+        return formattedTime;
+    }
 
     void displaySetAlarmSettings(int[] alarmSettings) {
-        for (int i = 0; i < alarmSettings.length-4; i++) {
+        for (int i = 0; i < alarmSettings.length-6; i++) {
             this.weekDays[i].setSelected((alarmSettings[i] == 1) ? true : false);
         }
         this.snoozeRButton.setSelected((alarmSettings[7] == 1) ? true : false);
@@ -195,6 +193,15 @@ public class NewAlarmDialog extends JDialog{
         this.minutesList.ensureIndexIsVisible(minutesList.getSelectedIndex());
         this.ampmMarkerList.setSelectedIndex(alarmSettings[10]);
         this.ampmMarkerList.ensureIndexIsVisible(ampmMarkerList.getSelectedIndex());
+    }
+
+    void clearNewAlarmDialogSelections() {
+        for (JToggleButton tb: this.weekDays)
+            tb.setSelected(false);
+        this.snoozeRButton.setSelected(false);
+        this.hoursList.clearSelection();
+        this.minutesList.clearSelection();
+        this.ampmMarkerList.clearSelection();
     }
 
     private void addAlarmComponents() {
@@ -210,14 +217,7 @@ public class NewAlarmDialog extends JDialog{
         this.add(resetButton);
     }
 
-    void clearNewAlarmDialogSelections() {
-        for (JToggleButton tb: this.weekDays)
-            tb.setSelected(false);
-
-        this.snoozeRButton.setSelected(false);
-
-        this.hoursList.clearSelection();
-        this.minutesList.clearSelection();
-        this.ampmMarkerList.clearSelection();
-    }    
+    public LinkedList<NewAlarm> getSetAlarms() {
+        return setAlarms;
+    }
 }

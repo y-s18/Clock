@@ -19,7 +19,6 @@ public class AlarmUI extends JPanel {
         addAlarmUIComponents();
     }
     
-    
     private void configureAlarmUIPanel() {
         this.setLayout(null);
     }
@@ -41,8 +40,8 @@ public class AlarmUI extends JPanel {
         this.alarmsListPanel.setLayout(new BoxLayout(alarmsListPanel, BoxLayout.PAGE_AXIS));
         this.alarmsListPanel.setBounds(1,1,98,98);
         alarmsListScrollPane = new JScrollPane(alarmsListPanel, 
-        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.alarmsListScrollPane.setBounds(500, 100, 100, 100);
     }
     
