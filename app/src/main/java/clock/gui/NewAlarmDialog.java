@@ -83,13 +83,13 @@ public class NewAlarmDialog extends JDialog{
     }
     
     private void createDayTButtons() {
-        this.weekDays[0]= new JToggleButton("Mo");
-        this.weekDays[1]= new JToggleButton("Tu");
-        this.weekDays[2]= new JToggleButton("We");
-        this.weekDays[3]= new JToggleButton("Th");
-        this.weekDays[4]= new JToggleButton("Fr");
-        this.weekDays[5]= new JToggleButton("Sa");
-        this.weekDays[6]= new JToggleButton("Su");
+        this.weekDays[0]= new JToggleButton("Su");
+        this.weekDays[1]= new JToggleButton("Mo");
+        this.weekDays[2]= new JToggleButton("Tu");
+        this.weekDays[3]= new JToggleButton("We");
+        this.weekDays[4]= new JToggleButton("Th");
+        this.weekDays[5]= new JToggleButton("Fr");
+        this.weekDays[6]= new JToggleButton("Sa");
     }
     
     private void configureDayTButtons() {

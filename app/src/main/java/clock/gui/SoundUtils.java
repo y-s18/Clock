@@ -41,7 +41,7 @@ public class SoundUtils {
         sdl.close();
     }
 
-    public static void playSound() throws Exception{
+    public void playSound() throws Exception{
         SoundUtils.configureTone(1000, 100);
     }
 }
