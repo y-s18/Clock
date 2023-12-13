@@ -18,8 +18,10 @@ public class NewAlarmDialog extends JDialog{
     private JRadioButton snoozeRButton;
     private JButton setButton;
     private JButton resetButton;
+    private JButton saveButton;
     private LinkedList<NewAlarm> setAlarms = new LinkedList<NewAlarm>();
     private JToggleButton[] weekDays = new JToggleButton[7];
+    private NewAlarm changeAlarmBuffer;
 
     public NewAlarmDialog(){
         configureDialog();
@@ -105,16 +107,20 @@ public class NewAlarmDialog extends JDialog{
         snoozeRButton = new JRadioButton("Snooze");
         setButton = new JButton("Set");
         resetButton = new JButton("Reset");
+        saveButton = new JButton("Save");
         
         snoozeRButton.setBounds(300,100,80,50);
         setButton.setBounds(100, 100, 80, 50);
         resetButton.setBounds(200, 100, 80, 50);
+        saveButton.setBounds(100, 100, 80, 50);
+        saveButton.setVisible(false);
+        snoozeRButton.setVisible(false);
 
-        String message = "Set a time";
+        String message = "Set a day and time";
         this.setButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (isTimeSelected()){
+                if (isTimeSelected() && isDaySelected()){
                     instantiateNewAlarm(createNewAlarmButton(), getSelectedSettings());
                     NewAlarmDialog.this.clearNewAlarmDialogSelections();
                     NewAlarmDialog.this.dispose();
@@ -130,6 +136,33 @@ public class NewAlarmDialog extends JDialog{
                 NewAlarmDialog.this.clearNewAlarmDialogSelections();
             }
         });
+
+        this.saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isTimeSelected() && isDaySelected()){
+                    int[] newAlarmSettings = NewAlarmDialog.this.getSelectedSettings();
+                    changeAlarmBuffer.setAlarmSettings(newAlarmSettings);
+                    NewAlarmDialog.this.dispose();
+                    NewAlarmDialog.this.setButton.setVisible(true);
+                    NewAlarmDialog.this.saveButton.setVisible(false);
+                    changeAlarmBuffer.setAlarmTime(formatAlarmTime(newAlarmSettings[11], newAlarmSettings[12], newAlarmSettings[10]));
+                    changeAlarmBuffer.getButton().setText(changeAlarmBuffer.getAlarmTime());
+                    changeAlarmBuffer = null;
+                } else {
+                    JOptionPane.showMessageDialog(new Frame(), message, "Select time", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+    }
+
+    boolean isDaySelected() {
+        for (JToggleButton day : weekDays){
+            if (day.isSelected()){
+                return true;
+            }
+        }
+        return false;
     }
     
     boolean isTimeSelected() {
@@ -164,11 +197,13 @@ public class NewAlarmDialog extends JDialog{
         newAlarm.setAlarmTime(formatAlarmTime(alarmSettings[11], alarmSettings[12], alarmSettings[10]));
         newAlarm.getButton().setText(newAlarm.getAlarmTime());
         this.setAlarms.add(newAlarm);
-
         newAlarmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                NewAlarmDialog.this.displaySetAlarmSettings(alarmSettings);
+                changeAlarmBuffer = newAlarm;
+                NewAlarmDialog.this.setButton.setVisible(false);
+                NewAlarmDialog.this.saveButton.setVisible(true);
+                NewAlarmDialog.this.displaySetAlarmSettings(newAlarm.getAlarmSettings());
                 NewAlarmDialog.this.setVisible(true);
             }
         });
@@ -215,6 +250,7 @@ public class NewAlarmDialog extends JDialog{
         this.add(snoozeRButton);
         this.add(setButton);
         this.add(resetButton);
+        this.add(saveButton);
     }
 
     public LinkedList<NewAlarm> getSetAlarms() {

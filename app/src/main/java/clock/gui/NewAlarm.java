@@ -4,7 +4,7 @@ import javax.swing.JButton;
 
 public class NewAlarm {
     private JButton button;    
-    private int[] alarmSettings;
+    private int[] alarmSettings;    
     private String alarmTime;
     private boolean sentNotification;
     
@@ -17,6 +17,10 @@ public class NewAlarm {
     public JButton getButton() {
         return button;
     }
+    
+    void setAlarmSettings(int[] alarmSettings) {
+        this.alarmSettings = alarmSettings;
+    }
 
     public int[] getAlarmSettings() {
         return this.alarmSettings;
@@ -27,8 +31,7 @@ public class NewAlarm {
     }
     
     public void setAlarmTime(String alarmTime) {
-        if (this.alarmTime == null)
-            this.alarmTime = alarmTime;
+        this.alarmTime = alarmTime;
     }
     
     public boolean isSentNotification() {
