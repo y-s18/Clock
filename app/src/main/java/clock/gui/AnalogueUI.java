@@ -37,6 +37,7 @@ public class AnalogueUI extends JPanel implements Runnable{
                 displayAnalogueTime();
                 Thread.sleep(500);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

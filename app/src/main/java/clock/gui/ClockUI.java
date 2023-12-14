@@ -20,15 +20,15 @@ public class ClockUI extends JPanel implements Runnable {
     JButton switchDigitalButton;
 
     public ClockUI() {
-        setUpAnaloguePanel();
-        setUpDigitalPanel();
-        setUpDeckPanel();
+        setupAnaloguePanel();
+        setupDigitalPanel();
+        setupDeckPanel();
 
         thread = new Thread(this);
         thread.start();
     }
 
-    private void setUpDeckPanel() {
+    private void setupDeckPanel() {
         cardLayout = new CardLayout();
         this.setLayout(cardLayout);
         addDeckComponents();
@@ -39,17 +39,19 @@ public class ClockUI extends JPanel implements Runnable {
         this.add(analoguePanel, "analogue");
     }
 
-    private void setUpDigitalPanel() {
+    private void setupDigitalPanel() {
         digitalPanel = new JPanel();
         digitalPanel.setSize(600,400);
         digitalPanel.setLayout(null);
-        setUpDigitalComponents();
+        digitalPanel.setBackground(Color.white);
+        setupDigitalComponents();
         addDigitalComponents();
     }
 
-    private void setUpDigitalComponents() {
+    private void setupDigitalComponents() {
         timeFormatSwitcher = new JButton();        
-        timeFormatSwitcher.setBounds(325,200,150,50);
+        timeFormatSwitcher.setBounds(225,175,300,100);
+        timeFormatSwitcher.setFont(new Font("Arial", Font.PLAIN, 40));
         timeFormatSwitcher.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 is24Format = is24Format ? false : true;
@@ -70,15 +72,15 @@ public class ClockUI extends JPanel implements Runnable {
         digitalPanel.add(switchAnalogueButton);
     }
     
-    private void setUpAnaloguePanel() {
+    private void setupAnaloguePanel() {
         analoguePanel = new AnalogueUI();
         analoguePanel.setSize(600,400);
         analoguePanel.setLayout(null);
-        setUpAnalogueComponents();
+        setupAnalogueComponents();
         addAnalogueComponents();
     }
 
-    private void setUpAnalogueComponents() {
+    private void setupAnalogueComponents() {
         switchDigitalButton = new JButton("<");
         switchDigitalButton.setBounds(700,200,50,50);
         switchDigitalButton.addActionListener(new ActionListener() {
@@ -97,10 +99,9 @@ public class ClockUI extends JPanel implements Runnable {
         try {
             while (true) {
                 displayTime(getCurrentTime());
-                // Thread.sleep(1000);
             }
         } catch (Exception e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
     }
 

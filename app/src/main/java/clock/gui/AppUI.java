@@ -5,10 +5,7 @@ import javax.swing.*;
 public class AppUI {
     JFrame mainFrame;
     JTabbedPane tabbedPane;
-    JPanel clockP;
     JPanel alarmP;
-    JPanel timerP;
-    JPanel stopwatchP;
     ClockUI clockUI;
 
     public AppUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
@@ -29,15 +26,11 @@ public class AppUI {
     private void createTabPaneComponents() {
         clockUI = new ClockUI();
         alarmP = new AlarmUI();
-        timerP = new JPanel();
-        stopwatchP = new JPanel();
     }
 
     private void addTabPaneComponents() {
         tabbedPane.add("Clock", clockUI);
         tabbedPane.add("Alarm", alarmP);
-        tabbedPane.add("Timer", timerP);
-        tabbedPane.add("Stopwatch", stopwatchP);
     }
 
     private void configureMainFrame() {

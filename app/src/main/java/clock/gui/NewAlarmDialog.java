@@ -3,6 +3,8 @@ package clock.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.plaf.DimensionUIResource;
+
 import java.util.LinkedList;
 
 public class NewAlarmDialog extends JDialog{
@@ -46,6 +48,7 @@ public class NewAlarmDialog extends JDialog{
         this.setTitle("Add New Alarm");
         this.setResizable(false);
         this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        // this.setBackground(Color.WHITE);
     }
     
     private void setupHoursList() {
@@ -171,9 +174,11 @@ public class NewAlarmDialog extends JDialog{
             && !this.ampmMarkerList.isSelectionEmpty();
     }
     
+    int x = 30;
     JButton createNewAlarmButton() {
         JButton newAlarmButton = new JButton("new Alarm");
-        newAlarmButton.setSize(75, 26);
+        newAlarmButton.setMaximumSize(new Dimension(299,25));
+        x += 30;
         return newAlarmButton;
     }
 

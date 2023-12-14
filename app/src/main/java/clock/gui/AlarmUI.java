@@ -33,11 +33,12 @@ public class AlarmUI extends JPanel implements Runnable{
     
     private void configureAlarmUIPanel() {
         this.setLayout(null);
+        this.setBackground(Color.white);
     }
     
     private void setupAlarmUIButtons() {
         addButton = new JButton("Add");
-        addButton.setBounds(100, 100, 80, 50);
+        addButton.setBounds(200, 100, 80, 50);
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -50,11 +51,11 @@ public class AlarmUI extends JPanel implements Runnable{
     private void setupAlarmsList() {
         alarmsListPanel = new JPanel();
         this.alarmsListPanel.setLayout(new BoxLayout(alarmsListPanel, BoxLayout.PAGE_AXIS));
-        this.alarmsListPanel.setBounds(1,1,98,98);
+        this.alarmsListPanel.setBounds(1,1,298,298);
         alarmsListScrollPane = new JScrollPane(alarmsListPanel, 
                                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        this.alarmsListScrollPane.setBounds(500, 100, 100, 100);
+        this.alarmsListScrollPane.setBounds(400, 100, 300, 300);
     }
     
     private void addWindowListenerToNADialog() {
