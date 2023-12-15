@@ -40,13 +40,14 @@ public class NewAlarmDialog extends JDialog{
         
         addAlarmComponents();
     }
-    
+
     private void configureDialog() {
         this.setLayout(null);
         this.setSize(600,400);
-        this.setTitle("Add New Alarm");
+        this.setTitle("");
         this.setResizable(false);
         this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
     private void setupHoursList() {
@@ -68,8 +69,8 @@ public class NewAlarmDialog extends JDialog{
     private void setupAmPmMarkerList() {
         ampmMarkerListModel = new DefaultListModel<>();
         ampmMarkerList = new JList<>(ampmMarkerListModel);
-        ampmMarkerListModel.addElement("am");
-        ampmMarkerListModel.addElement("pm");
+        ampmMarkerListModel.addElement("AM");
+        ampmMarkerListModel.addElement("PM");
         ampmMarkerList.setFont(new Font("Arial", Font.PLAIN, 35));
     }
     
@@ -161,6 +162,16 @@ public class NewAlarmDialog extends JDialog{
                 }
             }
         });
+
+        this.deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                NewAlarmDialog.this.deleteButton.setEnabled(false);
+                NewAlarmDialog.this.setAlarms.remove(changeAlarmBuffer);
+                changeAlarmBuffer = null;
+                NewAlarmDialog.this.dispose();
+            }
+        });
     }
 
     boolean isDaySelected() {
@@ -179,8 +190,10 @@ public class NewAlarmDialog extends JDialog{
     }
     
     JButton createNewAlarmButton() {
-        JButton newAlarmButton = new JButton("new Alarm");
-        newAlarmButton.setMaximumSize(new Dimension(299,25));
+        JButton newAlarmButton = new JButton();
+        newAlarmButton.setMinimumSize(new Dimension(299, 30));
+        newAlarmButton.setMaximumSize(new Dimension(299,30));
+        newAlarmButton.setFont(new Font("Arial", Font.PLAIN, 16));
         return newAlarmButton;
     }
 
@@ -207,10 +220,12 @@ public class NewAlarmDialog extends JDialog{
         newAlarmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                NewAlarmDialog.this.setTitle("Edit Alarm");
                 changeAlarmBuffer = newAlarm;
                 NewAlarmDialog.this.setButton.setVisible(false);
                 NewAlarmDialog.this.saveButton.setVisible(true);
                 NewAlarmDialog.this.displaySetAlarmSettings(newAlarm.getAlarmSettings());
+                NewAlarmDialog.this.deleteButton.setEnabled(true);
                 NewAlarmDialog.this.setVisible(true);
             }
         });
@@ -263,5 +278,17 @@ public class NewAlarmDialog extends JDialog{
 
     public LinkedList<NewAlarm> getSetAlarms() {
         return setAlarms;
+    }
+
+    public JButton getSetButton() {
+        return setButton;
+    }
+
+    public JButton getSaveButton() {
+        return saveButton;
+    }
+    
+    public JButton getDeleteButton() {
+        return deleteButton;
     }
 }

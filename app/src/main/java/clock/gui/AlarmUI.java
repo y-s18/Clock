@@ -42,6 +42,7 @@ public class AlarmUI extends JPanel implements Runnable{
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                AlarmUI.this.naDialog.setTitle("Add New Alarm");
                 ((NewAlarmDialog) AlarmUI.this.naDialog).clearNewAlarmDialogSelections();
                 AlarmUI.this.naDialog.setVisible(true);
             }
@@ -65,6 +66,10 @@ public class AlarmUI extends JPanel implements Runnable{
                 AlarmUI.this.alarmsListPanel.removeAll();
                 for (NewAlarm na : ((NewAlarmDialog) AlarmUI.this.naDialog).getSetAlarms()) 
                     AlarmUI.this.alarmsListPanel.add(na.getButton());
+                ((NewAlarmDialog) AlarmUI.this.naDialog).getSaveButton().setVisible(false);
+                ((NewAlarmDialog) AlarmUI.this.naDialog).getSetButton().setVisible(true);
+                ((NewAlarmDialog) AlarmUI.this.naDialog).getDeleteButton().setEnabled(false);
+                AlarmUI.this.repaint();
             }
         });
     }
@@ -98,13 +103,15 @@ public class AlarmUI extends JPanel implements Runnable{
 
     private void compareCurrentTimeWithAlarmTime() {
         for (int i=0; i<((NewAlarmDialog) this.naDialog).getSetAlarms().size(); i++){
-            NewAlarm na = ((NewAlarmDialog) this.naDialog).getSetAlarms().get(i);
-            if(isTimeToRing(na)){
-                sendNotification(na);
-                try { this.su.playSound(); }
-                catch (Exception e) { e.printStackTrace(); }
-            }else {
-                na.setSentNotification(false);
+            if (!((NewAlarmDialog) this.naDialog).getSetAlarms().isEmpty()){
+                NewAlarm na = ((NewAlarmDialog) this.naDialog).getSetAlarms().get(i);
+                if(isTimeToRing(na)){
+                    sendNotification(na);
+                    try { this.su.playSound(); }
+                    catch (Exception e) { e.printStackTrace(); }
+                }else {
+                    na.setSentNotification(false);
+                }
             }
         }
     }
