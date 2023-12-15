@@ -3,8 +3,6 @@ package clock.gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
-
 import java.util.LinkedList;
 
 public class NewAlarmDialog extends JDialog{
@@ -21,6 +19,7 @@ public class NewAlarmDialog extends JDialog{
     private JButton setButton;
     private JButton resetButton;
     private JButton saveButton;
+    private JButton deleteButton;
     private LinkedList<NewAlarm> setAlarms = new LinkedList<NewAlarm>();
     private JToggleButton[] weekDays = new JToggleButton[7];
     private NewAlarm changeAlarmBuffer;
@@ -48,7 +47,6 @@ public class NewAlarmDialog extends JDialog{
         this.setTitle("Add New Alarm");
         this.setResizable(false);
         this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-        // this.setBackground(Color.WHITE);
     }
     
     private void setupHoursList() {
@@ -56,6 +54,7 @@ public class NewAlarmDialog extends JDialog{
         for(int i=1; i<13;i++)
             hoursListModel.addElement(i<10 ? "0"+i : ""+i);        
         hoursList = new JList<>(hoursListModel);
+        hoursList.setFont(new Font("Arial", Font.PLAIN, 35));
     }
     
     private void setupMinutesList() {
@@ -63,6 +62,7 @@ public class NewAlarmDialog extends JDialog{
         for(int i=0; i<60;i++)
             minutesListModel.addElement(i<10 ? "0"+i : ""+i);            
         minutesList = new JList<>(minutesListModel);
+        minutesList.setFont(new Font("Arial", Font.PLAIN, 35));
     }
     
     private void setupAmPmMarkerList() {
@@ -70,21 +70,22 @@ public class NewAlarmDialog extends JDialog{
         ampmMarkerList = new JList<>(ampmMarkerListModel);
         ampmMarkerListModel.addElement("am");
         ampmMarkerListModel.addElement("pm");
+        ampmMarkerList.setFont(new Font("Arial", Font.PLAIN, 35));
     }
     
     private void setupHoursPane() {
         hoursScrollPane = new JScrollPane(hoursList);
-        hoursScrollPane.setBounds(300,250,40,25);
+        hoursScrollPane.setBounds(175,100,75,50);
     }
     
     private void setupMinutesPane() {
         minutesScrollPane = new JScrollPane(minutesList);
-        minutesScrollPane.setBounds(340,250,40,25);
+        minutesScrollPane.setBounds(250,100,75,50);
     }
     
     private void setupAmPmMarkerPane() {
         ampmMarkerScrollPane = new JScrollPane(ampmMarkerList);
-        ampmMarkerScrollPane.setBounds(380,250,40,25);
+        ampmMarkerScrollPane.setBounds(325,100,75,50);
     }
     
     private void createDayTButtons() {
@@ -98,9 +99,9 @@ public class NewAlarmDialog extends JDialog{
     }
     
     private void configureDayTButtons() {
-        int x = 0;
+        int x = 130;
         for (JToggleButton tb : this.weekDays) {
-            tb.setBounds(x,0,45,25);
+            tb.setBounds(x,150,45,25);
             tb.setFont(new Font("Arial", Font.PLAIN, 8));
             x += 45;    
         }
@@ -111,13 +112,16 @@ public class NewAlarmDialog extends JDialog{
         setButton = new JButton("Set");
         resetButton = new JButton("Reset");
         saveButton = new JButton("Save");
-        
+        deleteButton = new JButton("Delete");
+
         snoozeRButton.setBounds(300,100,80,50);
-        setButton.setBounds(100, 100, 80, 50);
-        resetButton.setBounds(200, 100, 80, 50);
-        saveButton.setBounds(100, 100, 80, 50);
-        saveButton.setVisible(false);
+        setButton.setBounds(162, 200, 80, 50);
+        resetButton.setBounds(247, 200, 80, 50);
+        saveButton.setBounds(162, 200, 80, 50);
+        deleteButton.setBounds(332, 200, 80, 50);
         snoozeRButton.setVisible(false);
+        saveButton.setVisible(false);
+        deleteButton.setEnabled(false);
 
         String message = "Set a day and time";
         this.setButton.addActionListener(new ActionListener() {
@@ -174,11 +178,9 @@ public class NewAlarmDialog extends JDialog{
             && !this.ampmMarkerList.isSelectionEmpty();
     }
     
-    int x = 30;
     JButton createNewAlarmButton() {
         JButton newAlarmButton = new JButton("new Alarm");
         newAlarmButton.setMaximumSize(new Dimension(299,25));
-        x += 30;
         return newAlarmButton;
     }
 
@@ -256,6 +258,7 @@ public class NewAlarmDialog extends JDialog{
         this.add(setButton);
         this.add(resetButton);
         this.add(saveButton);
+        this.add(deleteButton);
     }
 
     public LinkedList<NewAlarm> getSetAlarms() {

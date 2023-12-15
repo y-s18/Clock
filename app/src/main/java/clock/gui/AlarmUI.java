@@ -50,7 +50,7 @@ public class AlarmUI extends JPanel implements Runnable{
     
     private void setupAlarmsList() {
         alarmsListPanel = new JPanel();
-        this.alarmsListPanel.setLayout(new BoxLayout(alarmsListPanel, BoxLayout.PAGE_AXIS));
+        this.alarmsListPanel.setLayout(new BoxLayout(alarmsListPanel, BoxLayout.Y_AXIS));
         this.alarmsListPanel.setBounds(1,1,298,298);
         alarmsListScrollPane = new JScrollPane(alarmsListPanel, 
                                     JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
