@@ -1,0 +1,16 @@
+# Ignore Gradle project-specific cache directory
+.gradle/*
+.vscode/*
+# .gitattributes
+# Ignore Gradle build output directory
+build/*
+bin/*
+.classpath
+*.class
+# gradle/*
+# gradlew
+# gradlew.bat
+# settings.gradle.kts
+# build.gradle.kts
+app/build/*
+# .gitignore
