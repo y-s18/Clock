@@ -93,7 +93,7 @@ public class AlarmUI extends JPanel implements Runnable {
     public void run() {
         while (true) {
             Calendar cal = Calendar.getInstance();
-            currHour = cal.get(Calendar.HOUR);
+            currHour = cal.get(Calendar.HOUR) == 0 ? 12 : cal.get(Calendar.HOUR);
             currMinute = cal.get(Calendar.MINUTE);
             currAmpmMarker = cal.get(Calendar.AM_PM);
             currDay = cal.get(Calendar.DAY_OF_WEEK);
