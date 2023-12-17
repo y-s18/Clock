@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
 
-public class AlarmUI extends JPanel implements Runnable{
+public class AlarmUI extends JPanel implements Runnable {
     private JButton addButton;
     private JPanel alarmsListPanel;
     private JScrollPane alarmsListScrollPane;
@@ -17,7 +17,7 @@ public class AlarmUI extends JPanel implements Runnable{
     private int currAmpmMarker;
     private int currDay;
 
-    public AlarmUI(){
+    public AlarmUI() {
         this.naDialog = new NewAlarmDialog();
         this.su = new SoundUtils();
 
@@ -30,12 +30,12 @@ public class AlarmUI extends JPanel implements Runnable{
         Thread thread = new Thread(this);
         thread.start();
     }
-    
+
     private void configureAlarmUIPanel() {
         this.setLayout(null);
         this.setBackground(Color.white);
     }
-    
+
     private void setupAlarmUIButtons() {
         addButton = new JButton("Add");
         addButton.setBounds(200, 100, 80, 50);
@@ -48,23 +48,23 @@ public class AlarmUI extends JPanel implements Runnable{
             }
         });
     }
-    
+
     private void setupAlarmsList() {
         alarmsListPanel = new JPanel();
         this.alarmsListPanel.setLayout(new BoxLayout(alarmsListPanel, BoxLayout.Y_AXIS));
-        this.alarmsListPanel.setBounds(1,1,298,298);
-        alarmsListScrollPane = new JScrollPane(alarmsListPanel, 
-                                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        this.alarmsListPanel.setBounds(1, 1, 298, 298);
+        alarmsListScrollPane = new JScrollPane(alarmsListPanel,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.alarmsListScrollPane.setBounds(400, 100, 300, 300);
     }
-    
+
     private void addWindowListenerToNADialog() {
         this.naDialog.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(WindowEvent windowEvent){
+            public void windowClosed(WindowEvent windowEvent) {
                 AlarmUI.this.alarmsListPanel.removeAll();
-                for (NewAlarm na : ((NewAlarmDialog) AlarmUI.this.naDialog).getSetAlarms()) 
+                for (NewAlarm na : ((NewAlarmDialog) AlarmUI.this.naDialog).getSetAlarms())
                     AlarmUI.this.alarmsListPanel.add(na.getButton());
                 ((NewAlarmDialog) AlarmUI.this.naDialog).getSaveButton().setVisible(false);
                 ((NewAlarmDialog) AlarmUI.this.naDialog).getSetButton().setVisible(true);
@@ -73,7 +73,7 @@ public class AlarmUI extends JPanel implements Runnable{
             }
         });
     }
-    
+
     private void addAlarmUIComponents() {
         this.add(addButton);
         this.add(alarmsListScrollPane);
@@ -102,36 +102,42 @@ public class AlarmUI extends JPanel implements Runnable{
     }
 
     private void compareCurrentTimeWithAlarmTime() {
-        for (int i=0; i<((NewAlarmDialog) this.naDialog).getSetAlarms().size(); i++){
-            if (!((NewAlarmDialog) this.naDialog).getSetAlarms().isEmpty()){
+        for (int i = 0; i < ((NewAlarmDialog) this.naDialog).getSetAlarms().size(); i++) {
+            if (!((NewAlarmDialog) this.naDialog).getSetAlarms().isEmpty()) {
                 NewAlarm na = ((NewAlarmDialog) this.naDialog).getSetAlarms().get(i);
-                if(isTimeToRing(na)){
+                if (isTimeToRing(na)) {
                     sendNotification(na);
-                    try { this.su.playSound(); }
-                    catch (Exception e) { e.printStackTrace(); }
-                }else {
+                    try {
+                        this.su.playSound();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
                     na.setSentNotification(false);
                 }
             }
         }
     }
-    
+
     private boolean isTimeToRing(NewAlarm na) {
         int setHour = na.getAlarmSettings()[11];
         int setMinute = na.getAlarmSettings()[12];
         int setAmpmMarker = na.getAlarmSettings()[10];
-        
-        return setHour==currHour 
-        && setMinute==currMinute 
-        && setAmpmMarker==currAmpmMarker 
-        && na.getAlarmSettings()[currDay-1]==1;
+
+        return setHour == currHour
+                && setMinute == currMinute
+                && setAmpmMarker == currAmpmMarker
+                && na.getAlarmSettings()[currDay - 1] == 1;
     }
-    
+
     private void sendNotification(NewAlarm na) {
-        if(!na.isSentNotification()){
+        if (!na.isSentNotification()) {
             na.setSentNotification(true);
-            try { displayTray(); } 
-            catch (AWTException e) { e.printStackTrace(); }
+            try {
+                displayTray();
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

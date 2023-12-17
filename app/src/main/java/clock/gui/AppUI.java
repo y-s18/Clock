@@ -3,16 +3,18 @@ package clock.gui;
 import javax.swing.*;
 
 public class AppUI {
-    JFrame mainFrame;
-    JTabbedPane tabbedPane;
-    JPanel alarmP;
-    ClockUI clockUI;
+    private JFrame mainFrame;
+    private JTabbedPane tabbedPane;
+    private AlarmUI alarmUI;
+    private ClockUI clockUI;
 
-    public AppUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    public AppUI() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+            UnsupportedLookAndFeelException {
         setUpAppComponents();
     }
 
-    private void setUpAppComponents() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    private void setUpAppComponents() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+            UnsupportedLookAndFeelException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         mainFrame = new JFrame("Main");
         tabbedPane = new JTabbedPane();
@@ -25,12 +27,12 @@ public class AppUI {
 
     private void createTabPaneComponents() {
         clockUI = new ClockUI();
-        alarmP = new AlarmUI();
+        alarmUI = new AlarmUI();
     }
 
     private void addTabPaneComponents() {
         tabbedPane.add("Clock", clockUI);
-        tabbedPane.add("Alarm", alarmP);
+        tabbedPane.add("Alarm", alarmUI);
     }
 
     private void configureMainFrame() {
@@ -40,7 +42,8 @@ public class AppUI {
         mainFrame.setResizable(false);
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    public static void main(String[] args) throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, UnsupportedLookAndFeelException {
         new AppUI();
     }
 

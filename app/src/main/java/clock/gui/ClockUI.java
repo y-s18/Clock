@@ -7,24 +7,22 @@ import java.util.*;
 import javax.swing.*;
 
 public class ClockUI extends JPanel implements Runnable {
-    Thread thread = null;
-    JButton timeFormatSwitcher;
-    Calendar cal;
-    Date currentTime;
-    SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
-    boolean is24Format = false; 
-    CardLayout cardLayout;
-    JPanel digitalPanel;
-    JPanel analoguePanel;
-    JButton switchAnalogueButton;
-    JButton switchDigitalButton;
+    private JButton timeFormatSwitcher;
+    private Calendar cal;
+    private SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+    private boolean is24Format = false;
+    private CardLayout cardLayout;
+    private JPanel digitalPanel;
+    private JPanel analoguePanel;
+    private JButton switchAnalogueButton;
+    private JButton switchDigitalButton;
 
     public ClockUI() {
         setupAnaloguePanel();
         setupDigitalPanel();
         setupDeckPanel();
 
-        thread = new Thread(this);
+        Thread thread = new Thread(this);
         thread.start();
     }
 
@@ -41,7 +39,7 @@ public class ClockUI extends JPanel implements Runnable {
 
     private void setupDigitalPanel() {
         digitalPanel = new JPanel();
-        digitalPanel.setSize(600,400);
+        digitalPanel.setSize(600, 400);
         digitalPanel.setLayout(null);
         digitalPanel.setBackground(Color.white);
         setupDigitalComponents();
@@ -49,20 +47,20 @@ public class ClockUI extends JPanel implements Runnable {
     }
 
     private void setupDigitalComponents() {
-        timeFormatSwitcher = new JButton();        
-        timeFormatSwitcher.setBounds(225,175,300,100);
+        timeFormatSwitcher = new JButton();
+        timeFormatSwitcher.setBounds(225, 175, 300, 100);
         timeFormatSwitcher.setFont(new Font("Arial", Font.PLAIN, 40));
         timeFormatSwitcher.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 is24Format = is24Format ? false : true;
             }
         });
 
         switchAnalogueButton = new JButton(">");
-        switchAnalogueButton.setBounds(700,200,50,50);
+        switchAnalogueButton.setBounds(700, 200, 50, 50);
         switchAnalogueButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                cardLayout.show(ClockUI.this, "analogue");               
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(ClockUI.this, "analogue");
             }
         });
     }
@@ -71,10 +69,10 @@ public class ClockUI extends JPanel implements Runnable {
         digitalPanel.add(timeFormatSwitcher);
         digitalPanel.add(switchAnalogueButton);
     }
-    
+
     private void setupAnaloguePanel() {
         analoguePanel = new AnalogueUI();
-        analoguePanel.setSize(600,400);
+        analoguePanel.setSize(600, 400);
         analoguePanel.setLayout(null);
         setupAnalogueComponents();
         addAnalogueComponents();
@@ -82,10 +80,10 @@ public class ClockUI extends JPanel implements Runnable {
 
     private void setupAnalogueComponents() {
         switchDigitalButton = new JButton("<");
-        switchDigitalButton.setBounds(700,200,50,50);
+        switchDigitalButton.setBounds(700, 200, 50, 50);
         switchDigitalButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                cardLayout.show(ClockUI.this, "digital");                
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(ClockUI.this, "digital");
             }
         });
     }
@@ -111,12 +109,12 @@ public class ClockUI extends JPanel implements Runnable {
     }
 
     private void displayTime(Date currentTime) {
-        if(is24Format){
+        if (is24Format) {
             formatter.applyPattern("HH:mm:ss");
         } else {
             formatter.applyPattern("hh:mm:ss a");
         }
-        timeFormatSwitcher.setText(formatter.format(currentTime));        
+        timeFormatSwitcher.setText(formatter.format(currentTime));
     }
 
 }
